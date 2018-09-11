@@ -298,113 +298,6 @@ In the examples above, `seq` and `rnorm` were both outputting a series of number
 ******
 ******
 
-## Vectors
-
-- The basic data structure in R is a **vector** -- an ordered collection of values. 
-- R treats even single values as 1-element vectors. 
-- The function `c` *combines* its arguments into a vector:
-- As `c` is a function, we specify it's arguments in curved brackets`(...)`
-
-```{r}
-x <- c(3,4,5,6)
-x
-```
-
-
-The `seq` function we saw before was another example of how to create a sequence of values. A useful shortcut is to use the `:` symbol. 
-
-```{r}
-x <- 3:6
-x
-```
-
-
-The square brackets `[]` indicate the position within the vector (the ***index***). We can extract individual elements by using the `[]` notation:
-
-```{r}
-x[1]
-x[4]
-```
-
-We can even put a vector inside the square brackets: (*vector indexing*)
-
-
-******
-******
-******
-
-### Exercise
-**Without using R!**
-
-  - If `y <- 2:4`, what would `x[y]` give?
-    + `[1]  3  5 `
-    + `[1]  2  4`
-    + `[1]  4  5  6`
-
-******
-******
-******
-
-
-When applying all standard arithmetic operations to vectors, application is element-wise. Thus, we say that R supports *vectorised* operations.
-
-```{r}
-x <- 1:10
-y <- x*2
-y
-z <- x^2
-
-x + y
-```
-
-Vectorised operations are extremely powerful. Operations that would require a *for* loop (or similar) in other languages such as **C**, **Python**, can be performed in a single line of R code.
-
-A vector can also contain text; called a character vector. Such a vector can also be constructed using the `c` function. 
-
-```{r}
-x <- c("A","B","C","D")
-```
-
-The quote marks are crucial. Why?
-
-```{r eval=FALSE}
-##try and ignore the eval=FALSE on the line above...we'll explain what this means later
-x <- c(A, B, C, D)
-```
-
-```{r echo=FALSE}
-### you don't need to run this code
-tt <- try(x <- c(A, B, C, D),silent = TRUE)
-cat(tt)
-```
-
-
-Another useful type of data that we will see is the *logical* or *boolean* which can take either the values of `TRUE` or `FALSE`
-
-```{r}
-x <- c(TRUE,TRUE,FALSE)
-```
-
-Logical values are useful when we want to create subsets of our data. We can use *comparison* operators; `==`, `>`, `<`, `!=` to check if values are equal, greater than, less than, or not equal.
-
-```{r}
-x <- c("A","A", "B","B","C")
-x == "A"
-x != "A"
-x <- rnorm(10)
-x > 0
-```
-
-However, all items in the vector **must** be the same type. If you attempt anything else, R will convert all values to the same (most basic) type.
-
-```{r}
-x <- c(1, 2, "three")
-x
-```
-
-
-
-
 
 ## Packages in R
 
@@ -416,16 +309,16 @@ The **Packages** tab in the bottom-right panel of RStudio lists all packages tha
 
 
 ```{r eval=FALSE}
-## RColorBrewer is a package for making nice colours
-library(RColorBrewer)
+## tidyversee is a collection of packages for data manipulation and visualisation
+library(tidyverse)
 ```
 
 There are functions for installing packages within R. If your package is part of the main **CRAN** repository, you can use `install.packages`
 
-We will be using the `dplyr` R package in this practical. To install it, we would do.
+We will be using the `tidyverse` R package in this practical. To install it, we would do.
 
 ```{r eval=FALSE}
-install.packages("dplyr")
+install.packages("tidyverse")
 ```
 
 
@@ -439,6 +332,10 @@ We are going to explore some of the basic features of R using data from the [gap
 
 You can download these data [here](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/gapminder.csv). Right-click the link and save to somewhere on your computer that you wish to work from.
 
+The [***tidyverse***](https://www.tidyverse.org/) is an eco-system of packages that provide a consistent, intuitive system for data manipulation and visualisation in R.
+
+![](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/images/data-cycle.png)
+
 ## The working directory
 
 Like other software (Word, Excel, Photoshop....), R has a default location where it will save files to and import data from. This is known as the *working directory* in R. You can query what R currently considers its working directory by doing:-
@@ -451,7 +348,7 @@ getwd()
 
 We can also list the files in this directory with:-
 
-```{}
+```{r}
 list.files()
 ```
 
@@ -469,10 +366,11 @@ myfile
 data <- read.csv(myfile)
 ```
 
-Assuming the file can be found, we can use `read.csv` to import. Other functions can be used to read tab-delimited files (`read.delim`) or a generic `read.table` function. A data frame object is created.
+Assuming the file can be found, we can use `read_csv` to import. Other functions can be used to read tab-delimited files (`read_delim`) or a generic `read.table` function. A data frame object is created.
 
 ```{r}
-gapminder <- read.csv("gapminder.csv")
+library(tidyverse)
+gapminder <- read_csv("gapminder.csv")
 ```
 
 The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
@@ -486,28 +384,21 @@ View(gapminder)
 We should always check the data frame that we have created. Sometimes R will happily read data using an inappropriate function and create an object without raising an error. However, the data might be unsuable. Consider:-
 
 ```{r}
-test <- read.delim("gapminder.csv")
-head(test)
-dim(test)
+test <- read_table("gapminder.csv")
+View(test)
 ```
 
-We are going to use the `dplyr` package to manipulate the data frame we have just created. This is part of the `tidyverse` eco-system of packages that provide a consistent, intuitive system for data manipulation and visualisation in R.
+We are going to use the `dplyr` package to manipulate the data frame we have just created. It is perfectly possible to work with data frame using the functions provided as part of "*base R*". However, many find it easy to read and write code using `dplyr`.
 
-```{r eval=FALSE}
-install.packages("tidyverse")
-```
-
-
-```{r}
-library(dplyr)
-gapminder
-```
+There are many more functions available in `dplyr` than we will cover today. An overview of all functions is given in the following [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
 ## `select`ing columns
 
+
 We can access the columns of a data frame by knowing the column name using the `select` function. The column names that we want to display are listed after the name of the data frame, separated by a `,` . 
 
-```{r eval=FALSE}
+```{r}
+library(dplyr)
 select(gapminder, country,continent)
 ```
 
@@ -586,11 +477,10 @@ filter(gapminder, continent != "Europe")
 ### Exercise
 
 - Create a subset of the data where the population less than a million in the year 2002
-- Create a subset of the data where the life expectancy is less than 45 in the year 2007
-    + a subset of the data where the life expectancy is less than 45 in the year 2007 and the country is not in Africa
+- Create a subset of the data where the life expectancy is greater than 80 in the year 2002
+- Create a subset of the **European** data where the life expectancy is greater than 80 in either the year 2002 *or* 2007
 
 ```{r}
-filter(gapminder, lifeExp < 60, year == 2007)
 
 ```
 
@@ -646,6 +536,31 @@ head(byWealth)
 write.csv(byWealth, file="dataOrderedByWealth.csv")
 ```
 
+We will now try an exercise that involves using several steps of these operations
+
+******
+******
+******
+
+### Exercise
+
+- Filter the data to include just observations from the year 2002
+- Order the table by increasing life expectancy
+- Remove the year column from the resulting data frame
+- Write the data frame out to a file
+
+```{r}
+
+
+
+```
+
+
+******
+******
+******
+
+
 # "Piping"
 
 We will often need to perform an analysis, or clean a dataset, using several `dplyr` functions in sequence. e.g. filtering, mutating, then selecting columns of interest (possibly followed by plotting - see later).
@@ -686,14 +601,80 @@ filter(gapminder, continent=="Europe") %>%
 
 # Plotting
 
-Scatter plots of x versus y
+The R language has extensive graphical capabilities.
+
+Graphics in R may be created by many different methods including base graphics and more advanced plotting packages such as lattice.
+
+The `ggplot2` package was created by Hadley Wickham and provides a intuitive plotting system to rapidly generate publication quality graphics.
+
+`ggplot2` builds on the concept of the “Grammar of Graphics” (Wilkinson 2005, Bertin 1983) which describes a consistent syntax for the construction of a wide range of complex graphics by a concise description of their components.
+
+## Why use ggplot2?
+
+The structured syntax and high level of abstraction used by ggplot2 should allow for the user to concentrate on the visualisations instead of creating the underlying code.
+
+On top of this central philosophy ggplot2 has:
+
+- Increased flexibility over many plotting systems.
+- An advanced theme system for professional/publication level graphics.
+- Large developer base – Many libraries extending its flexibility.
+- Large user base – Great documentation and active mailing list.
+
+
+It is always useful to think about the message you want to convey and the appropriate plot before writing any R code. Resources like [this](https://www.data-to-viz.com/) should help.
+
+With some practice, `ggplot2` makes it easier to go from the figure you are imagining in our head (or on paper) to a publication-ready image in R. 
+
+As with `dplyr`, we won't have time to cover all details of `ggplot2`. This is however a useful [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+
+## Basic plot types
+
+A plot in `ggplot2` is created with the following type of command
+
+```
+ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()
+```
+
+So we need to specify
+
+- The data to be used in graph
+- Mappings of data to the graph (*aesthetic* mapping)
+- What type of graph we want to use (The *geom* to use).
+
+Lets say that we want to explore the relationship between GDP and Life Expectancy; Do richer / poorer countries have higher / lower life expectancy. A sensible choice of plot would be a *scatter plot* with gdp on the x-axis and life expectancy on the y-axis.
+
+The first stage is to specify our dataset
 
 ```{r}
 library(ggplot2)
-ggplot(gapminder, aes(x = gdpPercap, y=lifeExp)) + geom_point()
+ggplot(data = gapminder)
+```
+
+For the aesthetics, as a bare minimum we will map the `gdpPercap` and `lifeExp` to the x- and y-axis of the plot
+
+```{r}
+ggplot(data = gapminder,aes(x=gdpPercap, y=lifeExp))
+```
+
+That created the axes, but we still need to define how to display our points on the plot. As we have continuous data for both the x- and y-axis, `geom_point` is a good choice.
+
+```{r}
+ggplot(data = gapminder,aes(x=gdpPercap, y=lifeExp)) + geom_point()
 ```
 
 
+
+- geom_point() - Scatter plots
+- geom_line() - Line plots
+- geom_smooth() - Fitted line plots
+- geom_bar() - Bar plots
+- geom_boxplot() - Boxplots
+- geom_jitter() - Jitter to plots
+- geom_histogram() - Histogram plots
+- geom_density() - Density plots
+- geom_text() - Text to plots
+- geom_errorbar() - Errorbars to plots
+- geom_violin() - Violin plots
 
 
 Distribution using boxplots
@@ -713,7 +694,7 @@ Counts with a barplot
 ggplot(gapminder, aes(x=continent)) + geom_bar()
 ```
 
-## Colour, shapes etc
+## Customising the plot appearance
 
 Our plots are a bit dreary at the moment, but we can add colour to them by mapping other aesthetics from the `gapminder` data frame.
 
@@ -734,6 +715,9 @@ There are lots of possibilities. It is easy to get carried-away!
 ```{r}
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,shape=continent,size=pop,col=as.factor(year))) + geom_point()
 ```
+
+## Facets
+
 
 Rather than putting too much information onto a single plot, we can use the technique of facetting to create a grid of plots
 
