@@ -8,33 +8,6 @@ output:
     toc_float: yes
 ---
 
-
-# A short introduction to R
-
-## Outline
-
-In this session, we review some of the fundamentals of the R language. It should be a useful refresher prior to the intermediate-level [Data Analysis and Visualisation using R](http://bioinformatics-core-shared-training.github.io/r-intermediate/) course. 
-
-Topics covered include:- 
-
-- Creating variables
-- Using Functions
-- Vectors
-- Data frame
-- Subsetting data, the base R way
-- Plotting 
-- Statistical testing
-- How to get help
-
-For a more detailed introduction, we suggest the following ***free*** resources
-
-- [Solving Biological Problems with R](http://cambiotraining.github.io/r-intro/)
-- [Introduction to Data Science with R](http://shop.oreilly.com/product/0636920034834.do)
-- [Coursera course in R](http://blog.revolutionanalytics.com/2012/12/coursera-videos.html)
-- [Beginners Introduction to R Statistical Software](http://bitesizebio.com/webinar/20600/beginners-introduction-to-r-statistical-software/)
-- [R programming wiki](https://en.wikibooks.org/wiki/R_Programming)
-- [Quick R](http://www.statmethods.net/)
-
 # R basics
 
 ## Advantages of R
@@ -493,14 +466,13 @@ filter(gapminder, continent != "Europe")
 ******
 
 
-Columns in the data frame can be modified, or new columns created using the `mutate` function.
+As well as selecting existing columns in the data frame, new columns created using the `mutate` function. We would typically use a function that would take an existing column and apply some operation to each entry in the column in-turn. In other words, the number of values returned by the function must be the same as the number of input values.
 
 ```{r}
 gapminder_extra <- mutate(gapminder, PopInMillions = pop / 1e6)
 gapminder_extra <- mutate(gapminder_extra, lifeExp = round(lifeExp))
 gapminder_extra
 ```
-
 
 ## Ordering and sorting
 
@@ -862,6 +834,8 @@ band_members
 There are various ways in which we can join these two tables together. We will just consider the case of a "left join".
 
 ![](images/left-join.gif)
+
+*Animated gif by Garrick Aden-Buie*
 
 `left_join` returns all rows from the first data frame regardless of whether there is a match in the second data frame. Rows with no match are included in the resulting data frame but have NA values in the additional columns coming from the second data frame.
 
