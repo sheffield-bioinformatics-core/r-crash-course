@@ -572,7 +572,7 @@ If we wanted to filter our results to just Europe there is no point displaying t
 The following is perfectly valid R code, but invites the user to make mistakes when writing it. We also have to create multiple copies of the same data frame.
 
 ```{r}
-tmp <- filter(gaminder, continent == "Europe")
+tmp <- filter(gapminder, continent == "Europe")
 tmp2 <- select(tmp, -continent)
 ```
 
@@ -895,13 +895,6 @@ inner_join(band_members,band_instruments)
 ******
 ******
 ******
-
-```{r}
-medals <- read_csv("medal_table.csv")
-filter(gapminder,year==2007) %>% 
-  left_join(medals) %>% 
-  ggplot(aes(x=pop,y=Total)) + geom_point()
-```
 
 
 
