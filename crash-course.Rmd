@@ -8,6 +8,10 @@ output:
     toc_float: yes
 ---
 
+# Acknowledgement
+
+These materials are adapted from a course developed at Cancer Research Uk Cambridge Institute by Mark Dunning, Matthew Eldridge and Thomas Carroll.
+
 # R basics
 
 ## Advantages of R
@@ -804,10 +808,13 @@ Returning to the correlation between life expectancy and year, we can summarise 
 ```{r}
 group_by(gapminder, country) %>% summarise(Correlation = cor(year ,lifeExp))
 ```
+We can then arrange the table by the correlation to see which countries have the lowest correlation
 
 ```{r}
 group_by(gapminder, country) %>% summarise(Correlation = cor(year ,lifeExp)) %>% arrange(Correlation)
 ```
+
+We can filter the results to find obsevations of interest
 
 ```{r}
 group_by(gapminder, country) %>% 
@@ -815,12 +822,15 @@ group_by(gapminder, country) %>%
   filter(Correlation < 0)
 ```
 
+The countries we identify could then be used as the basis for a plot.
+
 ```{r}
 filter(gapminder, country %in% c("Rwanda","Zambia","Zimbabwe")) %>% 
   ggplot(aes(x=year, y=lifeExp,col=country)) + geom_line()
-```
+``` 
 
 # Joining
+
 In many real life situations, data are spread across multiple tables or spreadsheets. Usually this occurs because different types of information about a subject, e.g. a patient, are collected from different sources. It may be desirable for some analyses to combine data from two or more tables into a single data frame based on a common column, for example, an attribute that uniquely identifies the subject.
 
 `dplyr` provides a set of join functions for combining two data frames based on matches within specified columns. For those familiar with such SQL, these operations are very similar to carrying out join operations between tables in a relational database.
