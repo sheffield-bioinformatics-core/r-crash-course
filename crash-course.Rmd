@@ -345,7 +345,7 @@ We've now turned our workshop material folder into an Rstudio project and launch
 
 ## Working in R Notebooks
 
-We'll also be working in an R Notebook. These file are an R Markdown document type, which combine R code with markdown, a documentation language, providing a framework for literate programming.  In an R Notebook, R code chunks can be executed independently and interactively, with output visible immediately beneath the input.
+We'll also be working in an [R Notebook](https://bookdown.org/yihui/rmarkdown/notebook.html). These file are an [R Markdown](https://bookdown.org/yihui/rmarkdown/) document type, which combine R code with markdown, a documentation language, providing a framework for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).  In an R Notebook, R code chunks can be executed independently and interactively, with output visible immediately beneath the input.
 
 Let's open an R Notebook to start work in.
 
@@ -370,6 +370,9 @@ New R code chunks can be inserted by:
 - `Insert` menu in the editor toolbar.
 
 Each line of R can be again executed by clicking on the line and pressing `Ctrl + Enter` (macOS: `Cmd + Enter`), or you can press the green triangle on the right-hand side to run everything in the chunk.
+
+
+_For more details, check out this [short tutorial](https://annakrystalli.me/literate-programming/) on literate programming in R Markdown_
 
 ##  Specifying good file paths
 
