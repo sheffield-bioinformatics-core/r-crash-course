@@ -6,6 +6,8 @@ output:
   html_notebook: 
     toc: yes
     toc_float: yes
+editor_options: 
+  chunk_output_type: inline
 ---
 
 # Acknowledgement
@@ -92,19 +94,8 @@ Once installed, you should be able to launch RStudio by clicking on its icon:-
 - The traditional way to enter R commands is via the Terminal, or using the console in RStudio (bottom-left panel when RStudio opens for first time).
   + this doesn't automatically keep track of the steps you did
 - Alternative, an *R script* can be used to keep a record of the commands you used.
-- For this course we will use a relatively new feature called *R markdown*.
-- An R markdown mixes plain text with R code
-- The R code can be run from inside the document and the results are displayed directly underneath
-- Each chunk of R code looks something like this.
-
-
-```{r}
-
-```
-
-
-- Each line of R can be executed by clicking on the line and pressing CTRL and ENTER
-- Or you can press the green triangle on the right-hand side to run everything in the chunk
+- The R code can be run from inside the script and the results are displayed in the console or Viewer panel (eg plots)
+- Each line of R code can be executed by clicking on the line and pressing CTRL and ENTER
 - Try this now!
 
 ```{r}
@@ -282,13 +273,7 @@ So far we have used functions that are available with the *base* distribution of
 
 Packages are distributed through *repositories*. The most-common ones are CRAN and Bioconductor. CRAN alone has many thousands of packages.
 
-The **Packages** tab in the bottom-right panel of RStudio lists all packages that you currently have installed. Clicking on a package name will show a list of functions that available once that package has been loaded. The `library` function is used to load a package and make it's functions / data available in your current R session. *You need to do this every time you load a new RStudio session*. 
-
-
-```{r eval=FALSE}
-## tidyversee is a collection of packages for data manipulation and visualisation
-library(tidyverse)
-```
+The **Packages** tab in the bottom-right panel of RStudio lists all packages that you currently have installed. Clicking on a package name will show a list of functions that available once that package has been loaded. 
 
 There are functions for installing packages within R. If your package is part of the main **CRAN** repository, you can use `install.packages`
 
@@ -299,83 +284,179 @@ install.packages("tidyverse")
 ```
 
 
-A package may have several *dependancies*; other R packages from which it uses functions or data types (re-using code from other packages is strongly-encouraged). If this is the case, the other R packages will be located and installed too.
+A package may have several *dependencies*; other R packages from which it uses functions or data types (re-using code from other packages is strongly-encouraged). If this is the case, the other R packages will be located and installed too.
 
 **So long as you stick with the same version of R, you won't need to repeat this install process.**
 
+
+Once a package is installed, the `library` function is used to load a package and make it's functions / data available in your current R session. *You need to do this every time you load a new RStudio session*. Let's go ahead and load the `tidyverse`.
+
+
+```{r}
+## tidyverse is a collection of packages for data manipulation and visualisation
+library(tidyverse)
+```
+
+
+
 # Dealing with data
 
-We are going to explore some of the basic features of R using data from the [gapminder](https://www.gapminder.org/data/) project, which have been bundled into an [R package](https://github.com/jennybc/gapminder). These data give various indicator variables for different countries around the world (life expectancy, population and Gross Domestic Product). We have saved these data as a `.csv` file to demonstrate how to import data into R.
+The [***tidyverse***](https://www.tidyverse.org/) is in fact an eco-system of packages that provides a consistent, intuitive system for data manipulation and visualisation in R.
 
-You can download these data [here](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/gapminder.csv). Right-click the link and save to somewhere on your computer that you wish to work from.
 
-The [***tidyverse***](https://www.tidyverse.org/) is an eco-system of packages that provide a consistent, intuitive system for data manipulation and visualisation in R.
+![](https://aberdeenstudygroup.github.io/studyGroup/lessons/SG-T2-JointWorkshop/tidyverse.png)
+_Image Credit:_ [***Aberdeen Study Group***](https://aberdeenstudygroup.github.io/studyGroup/lessons/SG-T2-JointWorkshop/PopulationChangeSpeciesOccurrence/)
 
-![](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/images/data-cycle.png)
+We are going to explore some of the basic features of the `tidyverse` using data from the [gapminder](https://www.gapminder.org/data/) project, which have been bundled into an [R package](https://github.com/jennybc/gapminder). These data give various indicator variables for different countries around the world (life expectancy, population and Gross Domestic Product). We have saved these data as a `.csv` file called `gapmider.csv` in a sub-directory called `raw_data/` to demonstrate how to import data into R.
 
-## The working directory
 
-Like other software (Word, Excel, Photoshop....), R has a default location where it will save files to and import data from. This is known as the *working directory* in R. You can query what R currently considers its working directory by doing:-
+You can download these data, along with the rest of the material needed for today's workshop and a copy of this handout  [here](https://github.com/annakrystalli/r-crash-course/raw/master/CourseData.zip). Save the `.zip` file somewhere on your computer and unzip it.
 
-```{r eval=FALSE}
-getwd()
+
+
+## Working in Rstudio Projects
+
+We are also going to working in an Rstudio [Project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). We suggest you organize each data analysis into a project: a folder on your computer containing all files relevant to a particular piece of work.
+There are a number of benefits to this practice in general, and the Rstudio implementation in particular, summarised in Jenny Bryan's blogpost on [Project-oriented workflows](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/).
+
+Makes work: 
+
+- Self-contained
+- Portable
+
+RStudio fully supports Project-based workflows, making it easy to switch from one to another, have many projects open at once, re-launch recently used Projects, etc.
+
+There are a few ways to create new Projects. We can start with a new Project in a nee directory but we can also turn an existing directory into a Project. Let's do this with the unzipped folder containing the workshop materials we just downloaded.
+
+
+<div class="alert alert-info">
+
+#### **File > New Project > Existing Directory > ...** 
+_choose workshop material directory_
+
+</div>
+
+We've now turned our workshop material folder into an Rstudio project and launched it, which means:
+
+- a **fresh R session has been launched** (see how the **Environment** tab is now clear)
+- the **working directory has been set to the project root** (you can check this form the header on the Console tab)
+- A project specific **History** is initiated.
+
+
+## Working in R Notebooks
+
+We'll also be working in an [R Notebook](https://bookdown.org/yihui/rmarkdown/notebook.html). These file are an [R Markdown](https://bookdown.org/yihui/rmarkdown/) document type, which combine R code with markdown, a documentation language, providing a framework for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).  In an R Notebook, R code chunks can be executed independently and interactively, with output visible immediately beneath the input.
+
+Let's open an R Notebook to start work in.
+
+<div class="alert alert-info">
+
+#### **File > New File > R Notebook** 
+
+- _give it a title_
+- _save it_
+
+</div>
+
+Each chunk of R code looks something like this.
+
+    `r ''````{r foo}
+    print('hello world!')
+    ```
+
+New R code chunks can be inserted by: 
+
+- keyboard shortcut: `Ctrl + Alt + I` (macOS: `Cmd + Option + I`) 
+- `Insert` menu in the editor toolbar.
+
+Each line of R can be again executed by clicking on the line and pressing `Ctrl + Enter` (macOS: `Cmd + Enter`), or you can press the green triangle on the right-hand side to run everything in the chunk.
+
+
+_For more details, check out this [short tutorial](https://annakrystalli.me/literate-programming/) on literate programming in R Markdown_
+
+##  Specifying good file paths
+
+
+One of the biggest strengths of working in Projects is the convention of **specifying file paths relative to the project root**. If all file paths in the project are specified relative to this root, code involving paths will direct to the correct locations, even if the Project is moved.
+
+A great way to create robust file paths is by using function `here()` in package `here`. The function constructs paths to your project's files relative to a project's root that work across different operating systems.
+
+Let's first install the package:
+
+```{r, eval = F}
+install.packages("here")
 ```
 
-*N.B. Here, a set of open and closed brackets `()` is used to call the `getwd` function with no arguments.*
-
-We can also list the files in this directory with:-
+We can now use function `here()` to create a path to the `gapminder.csv` in the `raw_data/` folder. We can assign it to a variable we'll use next to load the file.
 
 ```{r}
-list.files()
+gapminder_path <- here::here("raw_data", "gapminder.csv")
+
+gapminder_path
 ```
 
-Any `.csv` file in the working directory can be imported into R by supplying the name of the file to the `read.csv` function and creating a new variable to store the result. A useful sanity check is the `file.exists` function which will print `TRUE` is the file can be found in the working directory.
+<div class="alert alert-warning">
+
+**Question: Why would specifying `gapminder_path` as `"/Users/Anna/Documents/workflows/workshops/r-crash-course/raw_data/gapminder.csv"` be a bad idea?**
+
+</div>
+
+
+## Reading in data
+
+Any `.csv` file can be imported into R by supplying the path to the file to `readr` function `read_csv` and assigning it to a new object to store the result. A useful sanity check is the `file.exists` function which will print `TRUE` is the file can be found in the working directory.
 
 ```{r}
-file.exists("gapminder.csv")
+file.exists(gapminder_path)
 ```
 
-If the file we want to read is not in the current working directory, we will have to write the path to the file; either *relevant* to the current working directory (e.g. the directory "up" from the current working directory, or in a sub-folder), or the full path. In an interactive session, you can do use `file.choose` to open a dialogue box. The path to the the file will then be displayed in R.
-
-```{r eval=FALSE}
-myfile <- file.choose()
-myfile
-data <- read.csv(myfile)
-```
 
 Assuming the file can be found, we can use `read_csv` to import. Other functions can be used to read tab-delimited files (`read_delim`) or a generic `read.table` function. A data frame object is created.
 
 ```{r}
-library(tidyverse)
-gapminder <- read_csv("gapminder.csv")
+gapminder <- read_csv(gapminder_path)
 ```
 
 The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
 
-In Rstudio , you can view the contents of the data frame we have just created. This is useful for interactive exploration of the data, but not so useful for automation and scripting and analyses.
+In Rstudio, you can view the contents of the data frame we have just created. This is useful for interactive exploration of the data, but not so useful for automation and scripting and analyses.
 
 ```{r eval=FALSE}
 View(gapminder)
 ```
 
+```{r, echo = FALSE}
+gapminder
+```
+
+
+
 We should always check the data frame that we have created. Sometimes R will happily read data using an inappropriate function and create an object without raising an error. However, the data might be unsuable. Consider:-
 
 ```{r}
-test <- read_table("gapminder.csv")
+test <- read_table(gapminder_path)
+```
+
+```{r, eval=F}
 View(test)
 ```
 
-We are going to use the `dplyr` package to manipulate the data frame we have just created. It is perfectly possible to work with data frame using the functions provided as part of "*base R*". However, many find it easy to read and write code using `dplyr`.
+```{r, echo = FALSE}
+test
+```
+
+## Manipulating data
+
+We are going to use functions from the `dplyr` package, which is automatically loaded by loading the `tidyverse` to manipulate the data frame we have just created. It is perfectly possible to work with data frame using the functions provided as part of "*base R*". However, many find it easy to read and write code using `dplyr`.
 
 There are many more functions available in `dplyr` than we will cover today. An overview of all functions is given in the following [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
-## `select`ing columns
+### `select`ing columns
 
 
 We can access the columns of a data frame by knowing the column name using the `select` function. The column names that we want to display are listed after the name of the data frame, separated by a `,` . 
 
 ```{r}
-library(dplyr)
 select(gapminder, country,continent)
 ```
 
@@ -398,7 +479,7 @@ select(gapminder, starts_with("life"))
 select(gapminder, contains("pop"))
 ```
 
-## Restricting rows with filter
+### Restricting rows with filter
 
 So far we have been returning all the rows in the output. We can use what we call a *logical test* to define what rows are displayed in the output. This is a test that gives either a `TRUE` or `FALSE` result. When applied to subsetting, only rows with a `TRUE` result get returned.
 
@@ -453,7 +534,7 @@ filter(gapminder, continent != "Europe")
 ******
 ******
 
-### Exercise
+#### Exercise
 
 - Create a subset of the data where the population less than a million in the year 2002
 - Create a subset of the data where the life expectancy is greater than 80 in the year 2002
@@ -478,7 +559,7 @@ gapminder_extra <- mutate(gapminder_extra, lifeExp = round(lifeExp))
 gapminder_extra
 ```
 
-## Ordering and sorting
+### Ordering and sorting
 
 The whole data frame can be re-ordered according to the values in one column using the `arrange` function. So to order the table according to population size:-
 
@@ -508,10 +589,17 @@ arrange(gapminder, year,pop)
 
 A final point on data frames is that we can export them out of R once we have done our data processing. 
 
+Let's create a folder in which to store such processed, analysis ready data
+
+```{r, warning=FALSE, message=FALSE}
+dir.create("data")
+```
+
+
 ```{r}
 byWealth <- arrange(gapminder, desc(gdpPercap))
 head(byWealth)
-write.csv(byWealth, file="dataOrderedByWealth.csv")
+write_csv(byWealth, path = here::here("data", "dataOrderedByWealth.csv"))
 ```
 
 We will now try an exercise that involves using several steps of these operations
@@ -520,7 +608,7 @@ We will now try an exercise that involves using several steps of these operation
 ******
 ******
 
-### Exercise
+#### Exercise
 
 - Filter the data to include just observations from the year 2002
 - Order the table by increasing life expectancy
@@ -574,7 +662,7 @@ filter(gapminder, continent=="Europe") %>%
   mutate(lifeExp = round(lifeExp)) %>% 
   arrange(year,lifeExp) %>% 
   select(country, year:lifeExp) %>% 
-  write.csv(file="europe-by-life-exp.csv")
+  write_csv(path = here::here("data", "europe-by-life-exp.csv"))
 
 ```
 
@@ -872,7 +960,7 @@ inner_join(band_members,band_instruments)
 
 ### Exercise (open-ended)
 
-- The file `medal_table.csv` contains data about how many medals how been won by various countries at the Beijing summer olympics of 2008.
+- The file `medal_table.csv` in the `raw_data/` project sub-directory contains data about how many medals how been won by various countries at the Beijing summer olympics of 2008.
 - Read this csv file into R and join with the `gapminder` data from 2007
 - What interesting summaries / plots can you make from the data?
 
