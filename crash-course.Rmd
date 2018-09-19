@@ -784,19 +784,29 @@ Counts with a barplot
 ggplot(gapminder, aes(x=continent)) + geom_bar()
 ```
 
+Where appropriate, we can add multiple layers of `geom`s to the plot. For instance, a criticism of the boxplot is that it does not show all the data. We can rectify this by overlaying the individual points.
+
+```{r}
+ggplot(gapminder, aes(x = as.factor(year), y=gdpPercap)) + geom_boxplot() + geom_point()
+```
+
+```{r}
+ggplot(gapminder, aes(x = as.factor(year), y=gdpPercap)) + geom_boxplot() + geom_jitter(width=0.1)
+```
 
 
 ******
 ******
 ******
 
-### Exercise
+### Exercises
 
-- One criticism of the boxplot is that it does not display the underlying data. Modify the boxplot showing GDP increase over time by adding points with `geom_point`.
+
 - The violin plot is a popular alternative to the boxplot. Create a violin plot with `geom_violin` to visualise the increase in GDP over time.
 - Create a subset of the `gapminder` data frame containing just the rows for your country of birth
 - Has there been an increase in life expectancy over time?
     + visualise the trend using a scatter plot (`geom_point`), line graph (`geom_line`) or smoothed line (`geom_smooth`).
+
 
 ******
 ******
@@ -904,6 +914,12 @@ Various labels can be modified using the `labs` function.
 
 ```{r}
 p + labs(x="Wealth",y="Life Expectancy",title="Relationship between Wealth and Life Expectancy")
+```
+
+We can also modify the x- and y- limits of the plot so that any outliers are not shown. `ggplot2` will give a warning that some points are excluded.
+
+```{r}
+p + xlim(0,60000)
 ```
 
 Saving is supported by the `ggsave` function.
