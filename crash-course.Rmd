@@ -1102,6 +1102,7 @@ inner_join(band_members, band_instruments)
 - Read this csv file into R and join with the `gapminder` data from 2007
 - What interesting summaries / plots can you make from the data? For example...
   + what countries have the greatest percentage of gold medals (ignore countries with too few medals)
+  + calculate the number of medals won per million people and re-arrange by this new measure. What countries perform best?
   + how similar is the distribution of total medals between continents?
   + do countries with a larger population tend to win more medals?
   + do countries with larger GDP tend to win more medals
