@@ -273,17 +273,18 @@ You can download these data, along with the rest of the material needed for toda
 
 ## Working in Rstudio Projects
 
-We are also going to working in an Rstudio [Project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). We suggest you organize each data analysis into a project: a folder on your computer containing all files relevant to a particular piece of work.
+We are also going to be working in an Rstudio [Project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects). We suggest you **organize each data analysis into a project: a folder on your computer containing all files relevant to a particular piece of work.**
+
 There are a number of benefits to this practice in general, and the Rstudio implementation in particular, summarised in Jenny Bryan's blogpost on [Project-oriented workflows](https://www.tidyverse.org/articles/2017/12/workflow-vs-script/).
 
-Makes work: 
+In general makes work: 
 
 - Self-contained
 - Portable
 
 RStudio fully supports Project-based workflows, making it easy to switch from one to another, have many projects open at once, re-launch recently used Projects, etc.
 
-There are a few ways to create new Projects. We can start with a new Project in a nee directory but we can also turn an existing directory into a Project. Let's do this with the unzipped folder containing the workshop materials we just downloaded.
+There are **a few ways to create new Projects**. We can start new Projects by creating a new directory. We can also **turn an existing directory into a Project**. Let's do this with the unzipped folder containing the workshop materials we just downloaded.
 
 
 <div class="alert alert-info">
@@ -302,9 +303,9 @@ We've now turned our workshop material folder into an Rstudio project and launch
 
 ## Working in R Notebooks
 
-We'll also be working in an [R Notebook](https://bookdown.org/yihui/rmarkdown/notebook.html). These file are an [R Markdown](https://bookdown.org/yihui/rmarkdown/) document type, which combine R code with markdown, a documentation language, providing a framework for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).  In an R Notebook, R code chunks can be executed independently and interactively, with output visible immediately beneath the input.
+We'll also be working in an [**R Notebook**](https://bookdown.org/yihui/rmarkdown/notebook.html). These file are an [R Markdown](https://bookdown.org/yihui/rmarkdown/) document type, which allow us to **combine R code with** [markdown](https://pandoc.org/MANUAL.html#pandocs-markdown), **a documentation language**, providing a framework for [literate programming](https://en.wikipedia.org/wiki/Literate_programming).  In an R Notebook, R code chunks can be executed independently and interactively, with output visible immediately beneath the input.
 
-Let's open an R Notebook to start work in.
+**Let's open an R Notebook to start work in.**
 
 <div class="alert alert-info">
 
@@ -326,15 +327,34 @@ New R code chunks can be inserted by:
 - keyboard shortcut: `Ctrl + Alt + I` (macOS: `Cmd + Option + I`) 
 - `Insert` menu in the editor toolbar.
 
-Each line of R can be again executed by clicking on the line and pressing `Ctrl + Enter` (macOS: `Cmd + Enter`), or you can press the green triangle on the right-hand side to run everything in the chunk.
+Each line of R in the chunks can be again executed by clicking on the line or highlighting code and pressing `Ctrl + Enter` (macOS: `Cmd + Enter`), or you can press the green triangle on the right-hand side to run everything in the chunk.
 
 
 _For more details, check out this [short tutorial](https://annakrystalli.me/literate-programming/) on literate programming in R Markdown_
 
+Let's clear everything and write our first markdown and chunk of code by creating a `markdown` header with:
+
+```
+# Packages
+```
+
+
+and loading the tidyverse packages for the analysis in our notebook
+
+    `r ''````{r load-packages}
+    library("tidyverse")
+    ```
+
+```{r load-packages, message=FALSE}
+library("tidyverse")
+```
+
+<br>
+
 ##  Specifying good file paths
 
 
-One of the biggest strengths of working in Projects is the convention of **specifying file paths relative to the project root**. If all file paths in the project are specified relative to this root, code involving paths will direct to the correct locations, even if the Project is moved.
+One of the biggest strengths of working in Projects is the convention of **specifying file paths relative to the project root**. If all file paths in the project are specified relative to this root, code involving paths will direct to the correct locations, even if the Project is moved or shared.
 
 A great way to create robust file paths is by using function `here()` in package `here`. The function constructs paths to your project's files relative to a project's root that work across different operating systems.
 
@@ -343,6 +363,13 @@ Let's first install the package:
 ```{r, eval = F}
 install.packages("here")
 ```
+
+Add `eval = F` to the chunk options as installation of packages should usually not be part of workflows.
+
+    `r ''````{r, eval = F}
+    install.packages("here")
+    ```
+
 
 We can now use function `here()` to create a path to the `gapminder.csv` in the `raw_data/` folder. We can assign it to a variable we'll use next to load the file.
 
@@ -354,7 +381,12 @@ gapminder_path
 
 <div class="alert alert-warning">
 
-**Question: Why would specifying `gapminder_path` as `"/Users/Anna/Documents/workflows/workshops/r-crash-course/raw_data/gapminder.csv"` be a bad idea?**
+**Question: Why would specifying `gapminder_path` as **
+```
+gapminder_path <- "/Users/Anna/Documents/workflows/workshops/r-crash-course/raw_data/gapminder.csv"
+```
+
+**be a bad idea?**
 
 </div>
 
@@ -374,9 +406,9 @@ Assuming the file can be found, we can use `read_csv` to import. Other functions
 gapminder <- read_csv(gapminder_path)
 ```
 
-The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
+The data frame object in R allows us to work with **"tabular" data**, like we might be used to dealing with in Excel, where our data can be thought of having **rows and columns**. The values in **each column** have to all be of the **same type** (i.e. all numbers or all text).
 
-In Rstudio, you can view the contents of the data frame we have just created. This is useful for interactive exploration of the data, but not so useful for automation and scripting and analyses.
+In Rstudio, you can **view the contents of the data frame** we have just created using function `View()`. This is useful for interactive exploration of the data, but not so useful for automation, scripting and analyses.
 
 ```{r eval=FALSE}
 View(gapminder)
@@ -388,7 +420,7 @@ gapminder
 
 
 
-We should always check the data frame that we have created. Sometimes R will happily read data using an inappropriate function and create an object without raising an error. However, the data might be unsuable. Consider:-
+We should **always check the data frame that we have created**. Sometimes R will happily read data using an inappropriate function and create an object without raising an error. However, the data might be unsuable. Consider:-
 
 ```{r}
 test <- read_table(gapminder_path)
@@ -402,26 +434,34 @@ View(test)
 test
 ```
 
+Quick sanity checks can also be performed by inspecting details in the environment tab. 
+ 
 ## Manipulating data
 
-We are going to use functions from the `dplyr` package, which is automatically loaded by loading the `tidyverse` to manipulate the data frame we have just created. It is perfectly possible to work with data frame using the functions provided as part of "*base R*". However, many find it easy to read and write code using `dplyr`.
+We are going to use functions from the **`dplyr`** package (which is automatically loaded by loading the `tidyverse`) to **manipulate the data frame** we have just created. It is perfectly possible to work with data frames using the functions provided as part of "*base R*". However, many find it easy to read and write code using `dplyr`.
 
-There are many more functions available in `dplyr` than we will cover today. An overview of all functions is given in the following [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+There are **many more functions available in `dplyr`** than we will cover today. An overview of all functions is given in the following [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
 
 ### `select`ing columns
 
 
-We can access the columns of a data frame by knowing the column name using the `select` function. The column names that we want to display are listed after the name of the data frame, separated by a `,` . 
+We can **access the columns** of a data frame using the `select` function. 
+
+#### by name
+
+Firstly, we can select column by name, by adding bare column names after the name of the data frame, separated by a `,` . 
 
 ```{r}
-select(gapminder, country,continent)
+select(gapminder, country, continent)
 ```
 
-We can also suppress some columns from appearing in the output by putting a `-` in front of the column name.
+We can also remove columns from by putting a minus (`-`) in front of the column name.
 
 ```{r}
 select(gapminder, -country)
 ```
+
+#### range of columns
 
 A range of columns can be selected by the `:` operator.
 
@@ -429,23 +469,27 @@ A range of columns can be selected by the `:` operator.
 select(gapminder, lifeExp:gdpPercap)
 ```
 
+#### helper functions 
+
 There are a number of helper functions can be employed if we are unsure about the exact name of the column.
 
 ```{r}
 select(gapminder, starts_with("life"))
 select(gapminder, contains("pop"))
+select(gapminder, one_of("pop", "country"))
 ```
 
 ### Restricting rows with filter
 
-So far we have been returning all the rows in the output. We can use what we call a *logical test* to define what rows are displayed in the output. This is a test that gives either a `TRUE` or `FALSE` result. When applied to subsetting, only rows with a `TRUE` result get returned.
+So far we have been returning all the rows in the output. We can use what we call a **logical test** to **filter the rows** in a data frame. This logical test will be applied to each row and give either a `TRUE` or `FALSE` result. When filtering, **only rows with a `TRUE` result get returned**.
 
-For example we could compare the `lifeExp` variable to 40. Internally, R creates a *vector* of `TRUE` or `FALSE`; one for each row in the data frame. This is then used to decide which rows to display.
+For example we filter for rows where the **`lifeExp` variable is less than 40**. 
 
 ```{r}
 filter(gapminder, lifeExp < 40)
 ```
 
+Internally, R creates a *vector* of `TRUE` or `FALSE`; one for each row in the data frame. This is then used to decide which rows to display.
 
 Testing for equality can be done using `==`. This will only give `TRUE` for entries that are *exactly* the same as the test string. 
 
@@ -454,36 +498,48 @@ filter(gapminder, country == "Zambia")
 
 ```
 
-N.B. For partial matches, the `grep` function and / or *regular expressions* (if you know them) can be used.
+N.B. For partial matches, the `grepl` function and / or *regular expressions* (if you know them) can be used.
 
 ```{r}
 filter(gapminder, grepl("land", country))
 ```
 
-
-There are a couple of ways of testing for more than one text value. The first uses an *or* `|` statement. i.e. testing if the value of `country` is `Zambia` *or* the value is `Zimbabwe`. Remember to use double `=` sign to test for string equality; `==`.
-
-The `%in%` function is a convenient function for testing which items in a vector correspond to a defined set of values.
-
-We can require that both tests are `TRUE` by using an *and* `&` operation. e.g. which years in Zambia had a life expectancy less than 40.
+We can also test if rows are *not* equal to a value using  `!=` 
 
 ```{r}
-filter(gapminder, country == "Zambia" & lifeExp < 40)
-filter(gapminder, country == "Zambia", lifeExp < 40)
+filter(gapminder, continent != "Europe")
 
 ```
 
-To allow 
+#### testing more than one condition
+
+There are a couple of ways of testing for more than one pattern. The first uses an *or* `|` statement. i.e. testing if the value of `country` is `Zambia` *or* the value is `Zimbabwe`. Remember to use double `=` sign to test for string equality; `==`.
+
 
 ```{r}
 filter(gapminder, country == "Zambia" | country == "Zimbabwe")
 ```
 
-Finally, we have `!=` for testing if something is *not* equal
+
+The `%in%` function is a convenient function for testing which items in a vector correspond to a defined set of values.
 
 ```{r}
-filter(gapminder, continent != "Europe")
+filter(gapminder, country %in% c("Zambia", "Zimbabwe"))
+```
 
+
+We can require that both tests are `TRUE`,  e.g. which years in Zambia had a life expectancy less than 40, by:
+
+- using an *and* `&` operation.
+
+```{r}
+filter(gapminder, country == "Zambia" & lifeExp < 40)
+
+```
+Or just by separating conditional statemnets by a `,`
+
+```{r}
+filter(gapminder, country == "Zambia", lifeExp < 40)
 ```
 
 
@@ -507,13 +563,16 @@ filter(gapminder, continent != "Europe")
 ******
 ******
 
+### manipulating column values
 
-As well as selecting existing columns in the data frame, new columns created using the `mutate` function. We would typically use a function that would take an existing column and apply some operation to each entry in the column in-turn. In other words, the number of values returned by the function must be the same as the number of input values.
+As well as selecting existing columns in the data frame, new columns can be created and existing ones manipulated using the `mutate` function. Typically a function or mathematical expression to data in existing columns by row and the result either stored in a new column or reassigned to an existing one. In other words, the number of values returned by the function must be the same as the number of input values. Multiple mutations can be performed in one call.
+
+Here, we create a new column of population in millions (`PopInMillions`) and round `lifeExp` to the nearest integer.
 
 ```{r}
-gapminder_extra <- mutate(gapminder, PopInMillions = pop / 1e6)
-gapminder_extra <- mutate(gapminder_extra, lifeExp = round(lifeExp))
-gapminder_extra
+mutate(gapminder, PopInMillions = pop / 1e6,
+       lifeExp = round(lifeExp))
+
 ```
 
 ### Ordering and sorting
@@ -521,17 +580,17 @@ gapminder_extra
 The whole data frame can be re-ordered according to the values in one column using the `arrange` function. So to order the table according to population size:-
 
 ```{r}
-arrange(gapminder,pop)
-  
+arrange(gapminder, pop)
 ```
+
 
 The default is `smallest --> largest` by we can change this using the `desc` function
 
 ```{r}
-arrange(gapminder,desc(pop))
+arrange(gapminder, desc(pop))
 ```
 
-`arrange` also works on character vectors
+`arrange` also works on character vectors, arrange them alpha-numerically.
 
 ```{r}
 arrange(gapminder, desc(country))
@@ -539,12 +598,14 @@ arrange(gapminder, desc(country))
 
 We can even order by more than one condition
 
-```{r eval=FALSE}
-arrange(gapminder, year,pop)
+```{r}
+arrange(gapminder, year, pop)
 ```
 
 
-A final point on data frames is that we can export them out of R once we have done our data processing. 
+### saving data frames
+
+A final point on data frames is that we can **write them to disk once we have done our data processing**. 
 
 Let's create a folder in which to store such processed, analysis ready data
 
@@ -556,7 +617,7 @@ dir.create("data")
 ```{r}
 byWealth <- arrange(gapminder, desc(gdpPercap))
 head(byWealth)
-write_csv(byWealth, path = here::here("data", "dataOrderedByWealth.csv"))
+write_csv(byWealth, path = here::here("data", "by_wealth.csv"))
 ```
 
 We will now try an exercise that involves using several steps of these operations
@@ -570,7 +631,7 @@ We will now try an exercise that involves using several steps of these operation
 - Filter the data to include just observations from the year 2002
 - Order the table by increasing life expectancy
 - Remove the year column from the resulting data frame
-- Write the data frame out to a file
+- Write the data frame out to a file in `data/` folder
 
 ```{r}
 
@@ -584,11 +645,11 @@ We will now try an exercise that involves using several steps of these operation
 ******
 
 
-# "Piping"
+### "Piping"
 
-We will often need to perform an analysis, or clean a dataset, using several `dplyr` functions in sequence. e.g. filtering, mutating, then selecting columns of interest (possibly followed by plotting - see later).
+We will **often need to perform an analysis, or clean a dataset, using several `dplyr` functions in sequence**. e.g. filtering, mutating, then selecting columns of interest (possibly followed by plotting - see later).
 
-If we wanted to filter our results to just Europe there is no point displaying the continent column in our output, so we don't need to show it.
+If we wanted to filter our results to just Europe and then also remove the now somewhat unnecessary `continent` column.
 
 The following is perfectly valid R code, but invites the user to make mistakes when writing it. We also have to create multiple copies of the same data frame.
 
@@ -617,9 +678,9 @@ We can join as many `dplyr` functions as we require for the analysis.
 filter(gapminder, continent=="Europe") %>% 
   select(-continent) %>% 
   mutate(lifeExp = round(lifeExp)) %>% 
-  arrange(year,lifeExp) %>% 
+  arrange(year, lifeExp) %>% 
   select(country, year:lifeExp) %>% 
-  write_csv(path = here::here("data", "europe-by-life-exp.csv"))
+  write_csv(path = here::here("data", "europe_by_lifeExp.csv"))
 
 ```
 
@@ -853,6 +914,7 @@ The `facet_grid` function will create a grid-like plot with one variable on the 
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_grid(continent~year)
 ```
 
+
 The previous plot was a bit messy as it contained all combinations of year and continent. Let's suppose we want our analysis to be a bit more focussed and disregard countries in Oceania (as there are only 2 in our dataset) and years between 1997 and 2002. We should know how to restrict the rows from the `gapminder` dataset using the `filter` function. Instead of filtering the data, creating a new data frame and construcing the data frame from these new data we can use the` %>%` operator to create the data frame on the fly and pass directly to `ggplot`. Thus we don't have to save a new data frame or alter the original data.
 
 
@@ -902,18 +964,21 @@ summarise(gapminder, min(lifeExp), max(gdpPercap), mean(pop))
 It is also possible to summarise using a function that takes more than one value, i.e. from multiple columns. For example, we could compute the correlation between year and life expectancy. Here we also assign names to the table that is produced.
 
 ```{r}
-summarise(gapminder, MinLifeExpectancy = min(lifeExp), 
+gapminder %>% 
+summarise(MinLifeExpectancy = min(lifeExp), 
           MaximumGDP = max(gdpPercap), 
-          AveragePop=mean(pop), 
-          Correlation=cor(year,lifeExp))
+          AveragePop = mean(pop), 
+          Correlation = cor(year, lifeExp))
 ```
 
 However, it is not particularly useful to calculate such values from the entire table as we have different continents and years. The `group_by` function allows us to split the table into different categories, and compute summary statistics. We can group the data according to year and compute the 
 
 ```{r}
-group_by(gapminder, year) %>% summarise( MinLifeExpectancy = min(lifeExp), 
-          MaximumGDP = max(gdpPercap), 
-          AveragePop=mean(pop))
+gapminder %>% 
+    group_by(year) %>% 
+    summarise(MinLifeExpectancy = min(lifeExp), 
+              MaximumGDP = max(gdpPercap), 
+              AveragePop = mean(pop))
 ```
 
 The nice thing about `summarise` is that it can followed up by any of the other `dplyr` verbs that we have met so far (`select`, `filter`, `arrange`..etc). 
@@ -921,20 +986,26 @@ The nice thing about `summarise` is that it can followed up by any of the other 
 Returning to the correlation between life expectancy and year, we can summarise as follows:-
 
 ```{r}
-group_by(gapminder, country) %>% summarise(Correlation = cor(year ,lifeExp))
+gapminder %>%     
+    group_by(country) %>% 
+    summarise(Correlation = cor(year , lifeExp))
 ```
 We can then arrange the table by the correlation to see which countries have the lowest correlation
 
 ```{r}
-group_by(gapminder, country) %>% summarise(Correlation = cor(year ,lifeExp)) %>% arrange(Correlation)
+gapminder %>%      
+    group_by(country) %>% 
+    summarise(Correlation = cor(year , lifeExp)) %>% 
+    arrange(Correlation)
 ```
 
 We can filter the results to find obsevations of interest
 
 ```{r}
-group_by(gapminder, country) %>% 
-  summarise(Correlation = cor(year ,lifeExp)) %>% 
-  filter(Correlation < 0)
+gapminder %>%      
+    group_by(country) %>% 
+    summarise(Correlation = cor(year , lifeExp)) %>% 
+    filter(Correlation < 0)
 ```
 
 The countries we identify could then be used as the basis for a plot.
@@ -967,19 +1038,19 @@ There are various ways in which we can join these two tables together. We will j
 Animations to illustrate other types of join are available at [https://github.com/gadenbuie/tidy-animated-verbs](https://github.com/gadenbuie/tidy-animated-verbs)
 
 ```{r}
-left_join(band_members,band_instruments)
+left_join(band_members, band_instruments)
 ```
 
 `right_join` is similar but returns all rows from the second data frame that have a match with rows in the first data frame based on the specified column.
 
 ```{r}
-right_join(band_members,band_instruments)
+right_join(band_members, band_instruments)
 ```
 
 `inner_join` only returns those rows where matches could be made
 
 ```{r}
-inner_join(band_members,band_instruments)
+inner_join(band_members, band_instruments)
 ```
 ******
 ******
