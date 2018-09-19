@@ -307,10 +307,10 @@ The [***tidyverse***](https://www.tidyverse.org/) is in fact an eco-system of pa
 ![](https://aberdeenstudygroup.github.io/studyGroup/lessons/SG-T2-JointWorkshop/tidyverse.png)
 _Image Credit:_ [***Aberdeen Study Group***](https://aberdeenstudygroup.github.io/studyGroup/lessons/SG-T2-JointWorkshop/PopulationChangeSpeciesOccurrence/)
 
-We are going to explore some of the basic features of the `tidyverse` using data from the [gapminder](https://www.gapminder.org/data/) project, which have been bundled into an [R package](https://github.com/jennybc/gapminder). These data give various indicator variables for different countries around the world (life expectancy, population and Gross Domestic Product). We have saved these data as a `.csv` file called `gapmider.csv` in a sub-directory called `raw_data/` to demonstrate how to import data into R.
+We are going to explore some of the basic features of the `tidyverse` using data from the [gapminder](https://www.gapminder.org/data/) project, which have been bundled into an [R package](https://github.com/jennybc/gapminder). These data give various indicator variables for different countries around the world (life expectancy, population and Gross Domestic Product). We have saved these data as a `.csv` file called `gapminder.csv` in a sub-directory called `raw_data/` to demonstrate how to import data into R.
 
 
-You can download these data, along with the rest of the material needed for today's workshop and a copy of this handout  [here](https://github.com/annakrystalli/r-crash-course/raw/master/CourseData.zip). Save the `.zip` file somewhere on your computer and unzip it.
+You can download these data, along with the rest of the material needed for today's workshop and a copy of this handout  [here](https://github.com/sheffield-bioinformatics-core/r-crash-course/raw/master/CourseData.zip). Save the `.zip` file somewhere on your computer and unzip it.
 
 
 
