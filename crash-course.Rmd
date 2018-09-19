@@ -581,8 +581,8 @@ The whole data frame can be re-ordered according to the values in one column usi
 
 ```{r}
 arrange(gapminder, pop)
-  
 ```
+
 
 The default is `smallest --> largest` by we can change this using the `desc` function
 
@@ -598,7 +598,7 @@ arrange(gapminder, desc(country))
 
 We can even order by more than one condition
 
-```{r eval=FALSE}
+```{r}
 arrange(gapminder, year, pop)
 ```
 
@@ -617,7 +617,7 @@ dir.create("data")
 ```{r}
 byWealth <- arrange(gapminder, desc(gdpPercap))
 head(byWealth)
-write_csv(byWealth, path = here::here("data", "dataOrderedByWealth.csv"))
+write_csv(byWealth, path = here::here("data", "by_wealth.csv"))
 ```
 
 We will now try an exercise that involves using several steps of these operations
@@ -680,7 +680,7 @@ filter(gapminder, continent=="Europe") %>%
   mutate(lifeExp = round(lifeExp)) %>% 
   arrange(year, lifeExp) %>% 
   select(country, year:lifeExp) %>% 
-  write_csv(path = here::here("data", "europe-by-life-exp.csv"))
+  write_csv(path = here::here("data", "europe_by_lifeExp.csv"))
 
 ```
 
