@@ -703,6 +703,7 @@ The *geom* we use will depend on what kind of data we have (continuous, categori
 - `geom_text()` - Text to plots
 - `geom_errorbar()` - Errorbars to plots
 - `geom_violin()` - Violin plots
+- `geom_tile()` - for "heatmap"-like plots
 
 
 Boxplots are commonly used to visualise the distributions of continuous data. We have to use a categorical variable on the x-axis. In the case of the `gapminder` data we might have to persuade `ggplot2` that the `year` column is a `factor` rather than numerical data.
@@ -730,6 +731,8 @@ ggplot(gapminder, aes(x=continent)) + geom_bar()
 
 ### Exercise
 
+- One criticism of the boxplot is that it does not display the underlying data. Modify the boxplot showing GDP increase over time by adding points with `geom_point`.
+- The violin plot is a popular alternative to the boxplot. Create a violin plot with `geom_violin` to visualise the increase in GDP over time.
 - Create a subset of the `gapminder` data frame containing just the rows for your country of birth
 - Has there been an increase in life expectancy over time?
     + visualise the trend using a scatter plot (`geom_point`), line graph (`geom_line`) or smoothed line (`geom_smooth`).
@@ -738,6 +741,13 @@ ggplot(gapminder, aes(x=continent)) + geom_bar()
 ******
 ******
 
+As we have seen already, `ggplot` offers an interface to create many popular plot types. It is up to the user to decide what the best way to visualise the data.
+
+It is also up to the user how to interpret the data. Consider the following plot and what message it might be conveying. 
+
+![](images/good_correlation.png)
+
+However, when considering [the source of the plot](http://www.tylervigen.com/spurious-correlations) your interpretation might change.
 
 ## Customising the plot appearance
 
@@ -767,9 +777,6 @@ ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point()
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=year)) + geom_point()
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=as.factor(year))) + geom_point()
 ```
-
-
-
 
 Shape and size of points can also be mapped from the data. However, it is easy to get carried away.
 
@@ -846,8 +853,6 @@ The `facet_grid` function will create a grid-like plot with one variable on the 
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_grid(continent~year)
 ```
 
-# Interaction between ggplot2 and dplyr
-
 The previous plot was a bit messy as it contained all combinations of year and continent. Let's suppose we want our analysis to be a bit more focussed and disregard countries in Oceania (as there are only 2 in our dataset) and years between 1997 and 2002. We should know how to restrict the rows from the `gapminder` dataset using the `filter` function. Instead of filtering the data, creating a new data frame and construcing the data frame from these new data we can use the` %>%` operator to create the data frame on the fly and pass directly to `ggplot`. Thus we don't have to save a new data frame or alter the original data.
 
 
@@ -856,12 +861,22 @@ filter(gapminder, continent!="Oceania", year %in% c(1997,2002,2007)) %>%
   ggplot(aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_grid(continent~year)
 ```
 
-In another example we might want to look at how life expectancy has changed for particular countries.
+******
+******
+******
 
-```{r}
-filter(gapminder, country %in% c("United Kingdom", "France","Spain")) %>% 
-  ggplot(aes(x = year, y=lifeExp,col=country)) + geom_point() + geom_line()
-```
+### Exercise
+
+- In a previous exercise we filtered the gapminder data to a particular country of interest, and then plotted the trend in life expectancy over time
+- Repeat this plot, but selecting three countries of interest and using piping `%>%` to avoid creating an intermediate data frame
+- Use a *facet* to split into separate plots 
+- See below for an example
+
+![](images/ggplot_example.png)
+
+******
+******
+******
 
 
 
