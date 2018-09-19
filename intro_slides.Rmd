@@ -82,7 +82,7 @@ _Image Credit:_ [***Aberdeen Study Group***](https://aberdeenstudygroup.github.i
 - Exercises
     + sticky notes to indicate progress
 - Tea and Coffee breaks!
-- You can view the course notes [online](http://sbc.shef.ac.uk/r-crash-course/crash-course.nb.html)
+- You can view the course notes [online](http://sbc.shef.ac.uk/r-crash-course/crash-course.nb.html) if you miss anything
 
 ## Course Data
 
@@ -113,3 +113,6 @@ gapminder::gapminder %>% filter(country %in% c("Zambia","Rwanda","Zimbabwe","Uni
 - [RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 - [R graph gallery](https://www.r-graph-gallery.com/0)
 - [Sheffield R meetup](https://www.meetup.com/SheffieldR-Sheffield-R-Users-Group/)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/r)
+- [R bloggers](https://www.r-bloggers.com/)
+- google!
