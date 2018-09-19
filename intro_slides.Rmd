@@ -21,7 +21,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Powerful data manipulation and graphics capabilities
 
-![](https://cdn-images-2.medium.com/max/1200/1*BTMbVFh_hziJJcaQ7TBRwg.png)
+<img src="https://cdn-images-2.medium.com/max/1200/1*BTMbVFh_hziJJcaQ7TBRwg.png" style="width: 100%; display: block; margin-left: auto; margin-right: auto;"/>
+
 
 
 ## Notable uses
@@ -50,7 +51,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - We will cover a very small set of packages - the **tidyverse**
 
-<img src="images/tidyverse-packages.png" style="width: 50%; display: block; margin-left: auto; margin-right: auto;"/>
+<img src="https://aberdeenstudygroup.github.io/studyGroup/lessons/SG-T2-JointWorkshop/tidyverse.png" style="width: 100%; display: block; margin-left: auto; margin-right: auto;"/>
+
+_Image Credit:_ [***Aberdeen Study Group***](https://aberdeenstudygroup.github.io/studyGroup/lessons/SG-T2-JointWorkshop/PopulationChangeSpeciesOccurrence/)
 
 
 ## Not covered in this course
@@ -83,23 +86,24 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Course Data
 
-![](images/gapminder.png)
+<img src="images/gapminder.png" style="width: 50%; display: block; margin-left: auto; margin-right: auto;"/>
 
 - We will use data from the gapminder project
-- Download the data [now](https://sheffield-bioinformatics-core.github.io/r-crash-course/CourseData.zip)
+- Download these data now and **unzip** to a folder on your machine
+    + **tinyurl.com/sbc-r-course**
 
 ## Example plots
 
 - By the end of the course we will be creating plots like this in a few lines of code
 
-```{r echo=FALSE, message=FALSE,fig.width=10}
+```{r echo=FALSE, message=FALSE,fig.width=8}
 library(tidyverse)
 gapminder::gapminder %>% filter(year==1977) %>% ggplot(aes(x = gdpPercap, y=lifeExp,colour=continent,size=pop)) + geom_point()+ scale_x_log10() + scale_color_brewer("Continent",palette = "Set1") + scale_size_continuous("Population in 1977")
 ```
 
 ## Example plots
 
-```{r fig.width=10,message=FALSE}
+```{r fig.width=8,message=FALSE}
 gapminder::gapminder %>% filter(country %in% c("Zambia","Rwanda","Zimbabwe","United Kingdom","Spain","Germany")) %>% ggplot(aes(x=year, y=lifeExp,col=country)) + geom_point() + geom_smooth() + facet_wrap(~country) + scale_color_brewer("Country",palette = "Set2")
 ``` 
 
