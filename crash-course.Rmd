@@ -757,11 +757,19 @@ ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point()
 
 
 
+<div class="alert alert-warning">
 
+**Question: Can you explain why the colour scheme used on the following two plots are different**
+
+</div>
 
 ```{r}
-ggplot(gapminder, aes(x = year, y=gdpPercap,fill=as.factor(year))) + geom_boxplot()
+ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=year)) + geom_point()
+ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=as.factor(year))) + geom_point()
 ```
+
+
+
 
 Shape and size of points can also be mapped from the data. However, it is easy to get carried away.
 
@@ -769,10 +777,57 @@ Shape and size of points can also be mapped from the data. However, it is easy t
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,shape=continent,size=pop,col=as.factor(year))) + geom_point()
 ```
 
+We can choose specific colour palettes, such as those provided by the `RColorBrewer` package. This package provides palettes for different types of scale (sequential, diverging, qualitative).
+
+```{r}
+library(RColorBrewer)
+display.brewer.all()
+```
+
+
 ```{r}
 ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + scale_color_brewer(palette = "Set2")
 ```
 
+Or we can even specify our own colours; such as The University of Sheffield branding colours
+
+```{r}
+my_pal <- c(rgb(0,159,218,maxColorValue = 255),
+            rgb(31,20,93,maxColorValue = 255),
+            rgb(249,227,0,maxColorValue = 255),
+            rgb(0,155,72,maxColorValue = 255),
+            rgb(190,214,0,maxColorValue = 255))
+ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + scale_color_manual(values=my_pal)
+
+```
+
+You will often see `ggplots` saved as a variable, which allows us to experiement with some of the layouts, themes and plotting options.
+
+```{r}
+p <- ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + scale_color_brewer(palette = "Set2")
+p
+```
+
+Various labels can be modified using the `labs` function.
+
+```{r}
+p + labs(x="Wealth",y="Life Expectancy",title="Relationship between Wealth and Life Expectancy")
+```
+
+Saving is supported by the `ggsave` function.
+
+```{r}
+
+ggsave(p, file="my_ggplot.png")
+```
+
+Most aspects of the plot can be modified from the background colour to the grid sizes and font. Several pre-defined "themes" exist and we can modify the appearance of the whole plot using a `theme_..` function.
+
+```{r}
+p + theme_bw()
+```
+
+More themes are supported by the `ggthemes` package. You can make your plots look like the Economist, Wall Street Journal or Excel (**but please don't do this!**)
 
 ## Facets
 
@@ -788,7 +843,7 @@ ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + 
 The `facet_grid` function will create a grid-like plot with one variable on the x-axis and another on the y-axis.
 
 ```{r fig.width=12}
-ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_wrap(continent~year)
+ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_grid(continent~year)
 ```
 
 # Interaction between ggplot2 and dplyr
@@ -798,7 +853,7 @@ The previous plot was a bit messy as it contained all combinations of year and c
 
 ```{r fig.width=12}
 filter(gapminder, continent!="Oceania", year %in% c(1997,2002,2007)) %>% 
-  ggplot(aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_wrap(continent~year)
+  ggplot(aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_grid(continent~year)
 ```
 
 In another example we might want to look at how life expectancy has changed for particular countries.
