@@ -318,7 +318,7 @@ We'll also be working in an [**R Notebook**](https://bookdown.org/yihui/rmarkdow
 
 Each chunk of R code looks something like this.
 
-    `r ''````{r foo}
+    `r ''````{r}
     print('hello world!')
     ```
 
