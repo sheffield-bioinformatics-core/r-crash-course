@@ -309,10 +309,9 @@ We'll also be working in an [**R Notebook**](https://bookdown.org/yihui/rmarkdow
 
 <div class="alert alert-info">
 
-#### **File > New File > R Notebook** 
+#### **File > Open File >** 
 
-- _give it a title_
-- _save it_
+- Navigate to the file `notes.Rmd` in the course materials
 
 </div>
 
@@ -351,32 +350,22 @@ library("tidyverse")
 
 <br>
 
-##  Specifying good file paths
 
 
-One of the biggest strengths of working in Projects is the convention of **specifying file paths relative to the project root**. If all file paths in the project are specified relative to this root, code involving paths will direct to the correct locations, even if the Project is moved or shared.
+## Reading in data
 
-A great way to create robust file paths is by using function `here()` in package `here`. The function constructs paths to your project's files relative to a project's root that work across different operating systems.
-
-Let's first install the package:
-
-```{r, eval = F}
-install.packages("here")
-```
-
-Add `eval = F` to the chunk options as installation of packages should usually not be part of workflows.
-
-    `r ''````{r, eval = F}
-    install.packages("here")
-    ```
-
-
-We can now use function `here()` to create a path to the `gapminder.csv` in the `raw_data/` folder. We can assign it to a variable we'll use next to load the file.
+Any `.csv` file can be imported into R by supplying the path to the file to `readr` function `read_csv` and assigning it to a new object to store the result. A useful sanity check is the `file.exists` function which will print `TRUE` is the file can be found in the working directory.
 
 ```{r}
-gapminder_path <- here::here("raw_data", "gapminder.csv")
+gapminder_path <- "raw_data/gapminder.csv"
+file.exists(gapminder_path)
+```
 
-gapminder_path
+
+Assuming the file can be found, we can use `read_csv` to import. Other functions can be used to read tab-delimited files (`read_delim`) or a generic `read.table` function. A data frame object is created.
+
+```{r}
+gapminder <- read_csv(gapminder_path)
 ```
 
 <div class="alert alert-warning">
@@ -390,21 +379,6 @@ gapminder_path <- "/Users/Anna/Documents/workflows/workshops/r-crash-course/raw_
 
 </div>
 
-
-## Reading in data
-
-Any `.csv` file can be imported into R by supplying the path to the file to `readr` function `read_csv` and assigning it to a new object to store the result. A useful sanity check is the `file.exists` function which will print `TRUE` is the file can be found in the working directory.
-
-```{r}
-file.exists(gapminder_path)
-```
-
-
-Assuming the file can be found, we can use `read_csv` to import. Other functions can be used to read tab-delimited files (`read_delim`) or a generic `read.table` function. A data frame object is created.
-
-```{r}
-gapminder <- read_csv(gapminder_path)
-```
 
 The data frame object in R allows us to work with **"tabular" data**, like we might be used to dealing with in Excel, where our data can be thought of having **rows and columns**. The values in **each column** have to all be of the **same type** (i.e. all numbers or all text).
 
@@ -617,7 +591,7 @@ dir.create("data")
 ```{r}
 byWealth <- arrange(gapminder, desc(gdpPercap))
 head(byWealth)
-write_csv(byWealth, path = here::here("data", "by_wealth.csv"))
+write_csv(byWealth, path = ("data/by_wealth.csv"))
 ```
 
 We will now try an exercise that involves using several steps of these operations
@@ -680,7 +654,7 @@ filter(gapminder, continent=="Europe") %>%
   mutate(lifeExp = round(lifeExp)) %>% 
   arrange(year, lifeExp) %>% 
   select(country, year:lifeExp) %>% 
-  write_csv(path = here::here("data", "europe_by_lifeExp.csv"))
+  write_csv(path = "data/europe_by_lifeExp.csv")
 
 ```
 
