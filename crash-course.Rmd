@@ -409,6 +409,11 @@ test
 ```
 
 Quick sanity checks can also be performed by inspecting details in the environment tab. 
+
+<div class="alert alert-warning">
+Question: Familiarise yourself with the contents of the data frame. What numerical summaries can you produce from the dataset (e.g. average life expectancy per-year, countries that are most wealthy etc) and what plots might be of interest? Discuss with your neighbours
+
+</div>
  
 ## Manipulating data
 
@@ -524,8 +529,8 @@ filter(gapminder, country == "Zambia", lifeExp < 40)
 #### Exercise
 
 - Create a subset of the data where the population less than a million in the year 2002
-- Create a subset of the data where the life expectancy is greater than 80 in the year 2002
-- Create a subset of the **European** data where the life expectancy is greater than 80 in either the year 2002 *or* 2007
+- Create a subset of the data where the life expectancy was greater than 75 in the years prior to 1987
+- (EXTRA - if you have time) Create a subset of the **European** data where the life expectancy is greater than 80 in either the year 2002 *or* 2007
 
 ```{r}
 
@@ -757,6 +762,14 @@ Counts with a barplot
 ```{r}
 ggplot(gapminder, aes(x=continent)) + geom_bar()
 ```
+The height of the bars can also be mapped directly to numeric variables in the data frame if the stat="identity" argument is set within geom_bar. Note that the axis labels can be modified, as we will see later on.
+
+```{r}
+gapminder2002 <- filter(gapminder, year==2002,continent=="Americas")
+ggplot(gapminder2002, aes(x=country,y=gdpPercap)) + geom_bar(stat="identity")
+```
+
+
 
 Where appropriate, we can add multiple layers of `geom`s to the plot. For instance, a criticism of the boxplot is that it does not show all the data. We can rectify this by overlaying the individual points.
 
@@ -859,10 +872,15 @@ We can choose specific colour palettes, such as those provided by the `RColorBre
 library(RColorBrewer)
 display.brewer.all()
 ```
+When experimenting with colour palettes and labels, it is useful to save the plot as an object
+
+```{r}
+p <- ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point()
+```
 
 
 ```{r}
-ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + scale_color_brewer(palette = "Set2")
+p + scale_color_brewer(palette = "Set2")
 ```
 
 Or we can even specify our own colours; such as The University of Sheffield branding colours
@@ -873,16 +891,10 @@ my_pal <- c(rgb(0,159,218,maxColorValue = 255),
             rgb(249,227,0,maxColorValue = 255),
             rgb(0,155,72,maxColorValue = 255),
             rgb(190,214,0,maxColorValue = 255))
-ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + scale_color_manual(values=my_pal)
+p + scale_color_manual(values=my_pal)
 
 ```
 
-You will often see `ggplots` saved as a variable, which allows us to experiement with some of the layouts, themes and plotting options.
-
-```{r}
-p <- ggplot(gapminder, aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + scale_color_brewer(palette = "Set2")
-p
-```
 
 Various labels can be modified using the `labs` function.
 
@@ -936,6 +948,56 @@ The previous plot was a bit messy as it contained all combinations of year and c
 filter(gapminder, continent!="Oceania", year %in% c(1997,2002,2007)) %>% 
   ggplot(aes(x = gdpPercap, y=lifeExp,col=continent)) + geom_point() + facet_grid(continent~year)
 ```
+
+## Adding text to a plot
+
+Annotations can be added to a plot using the flexible annotate function documented [here](https://ggplot2.tidyverse.org/reference/annotate.html). This presumes that you know the coordinates that you want to add the annotations at.
+
+```{r}
+p<- ggplot(gapminder, aes(x = gdpPercap, y = lifeExp,col=continent)) + geom_point()
+p + annotate("text", x = 90000,y=60, label="Some text")
+```
+
+Highlighting particular poins of interest using a rectangle.
+
+```{r}
+p + annotate("rect", xmin=25000, xmax=120000,ymin=50,ymax=75,alpha=0.2)
+```
+
+We can also map directly from a column in our dataset to the label aesthetic. However, this will label all the points which is rather cluttered in our case
+
+```{r}
+ggplot(gapminder, aes(x = gdpPercap, y = lifeExp,col=continent,label=country)) + geom_point() + geom_text()
+```
+
+Instead, we could use a different dataset when we create the text labels with geom_text. Here we filter the gapminder dataset to only countries with `gdpPercap` greater than 57000 and only these points get labelled. We can also set the text colours to a particular value rather than using the original colour mappings for the plot (based on continent).
+
+
+```{r}
+p + geom_text(data = filter(gapminder, gdpPercap > 57000), 
+              aes(x = gdpPercap, y = lifeExp,label=country),col="black")
+```
+
+```{r}
+p + geom_text(data = filter(gapminder, gdpPercap > 25000, lifeExp < 75), 
+              aes(x = gdpPercap, y = lifeExp,label=country),col="black",size=3) + annotate("rect", xmin=25000, xmax=120000,ymin=50,ymax=75,alpha=0.2)
+```
+
+## Comment about the axis scale
+
+The plot of `gdpPercap` vs `lifeExp` on the original scale seems to be influenced by the outlier observations (which we now know are observations from Kuwait). In such situations it may be possible to transform the scale of one axis for visualisation purposes. One such transformation is log10, which we can apply with the `scale_x_log10` function. Others include `scale_x_log2`,  `scale_x_sqrt` and equivalents for the y axis.
+
+```{r}
+p + scale_x_log10()
+```
+
+By splitting the plot by continents we see more clearly which continents have a more linear relationship. At the moment this is useful for visualisation purposes, if we wanted to obtain summaries from the data we would need the techniques in the next section.
+
+```{r}
+p + scale_x_log10() + geom_smooth(method="lm",col="black") + facet_wrap(~continent)
+```
+
+
 
 ******
 ******
@@ -1028,6 +1090,24 @@ The countries we identify could then be used as the basis for a plot.
 filter(gapminder, country %in% c("Rwanda","Zambia","Zimbabwe")) %>% 
   ggplot(aes(x=year, y=lifeExp,col=country)) + geom_line()
 ``` 
+
+
+******
+******
+******
+
+### Exercise
+
+- Produce a plot to show the change in average `gdpPercap` for each continent over time.
+- see below for a suggestion
+  + HINT: you will need to specifiy the `stat=identity` option when creating the bar plot
+
+```{r eval=FALSE}
+......+ geom_bar(stat="identity")
+```
+
+![](images/ggplot2_target.png)
+
 
 # Joining
 
