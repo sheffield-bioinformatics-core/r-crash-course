@@ -762,7 +762,7 @@ Counts with a barplot
 ```{r}
 ggplot(gapminder, aes(x=continent)) + geom_bar()
 ```
-The height of the bars can also be mapped directly to numeric variables in the data frame if the `geom_col` function is used insteam of `geom_bar`. Note that the axis labels can be modified, as we will see later on.
+The height of the bars can also be mapped directly to numeric variables in the data frame if the `geom_col` function is used instead of `geom_bar`. Note that the axis labels can be modified, as we will see later on.
 
 ```{r}
 gapminder2002 <- filter(gapminder, year==2002,continent=="Americas")
