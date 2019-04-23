@@ -762,11 +762,11 @@ Counts with a barplot
 ```{r}
 ggplot(gapminder, aes(x=continent)) + geom_bar()
 ```
-The height of the bars can also be mapped directly to numeric variables in the data frame if the stat="identity" argument is set within geom_bar. Note that the axis labels can be modified, as we will see later on.
+The height of the bars can also be mapped directly to numeric variables in the data frame if the `geom_col` function is used insteam of `geom_bar`. Note that the axis labels can be modified, as we will see later on.
 
 ```{r}
 gapminder2002 <- filter(gapminder, year==2002,continent=="Americas")
-ggplot(gapminder2002, aes(x=country,y=gdpPercap)) + geom_bar(stat="identity")
+ggplot(gapminder2002, aes(x=country,y=gdpPercap)) + geom_col()
 ```
 
 
@@ -1100,11 +1100,6 @@ filter(gapminder, country %in% c("Rwanda","Zambia","Zimbabwe")) %>%
 
 - Produce a plot to show the change in average `gdpPercap` for each continent over time.
 - see below for a suggestion
-  + HINT: you will need to specifiy the `stat=identity` option when creating the bar plot
-
-```{r eval=FALSE}
-......+ geom_bar(stat="identity")
-```
 
 ![](images/ggplot2_target.png)
 
