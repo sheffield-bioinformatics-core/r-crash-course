@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Course Introduction
 
 - Data Manipulation and Visualisation
-- University of Sheffield
-- 29th March 2019 09:30 - 17:00
+- Sheffield Hallam University
+- 21th June 2019 09:30 - 17:00
 
 ## History of R
 
