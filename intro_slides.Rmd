@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - Data Manipulation and Visualisation
 - University of Sheffield
-- 17th September 2019 09:30 - 17:00
+- 3rd March 2020 09:30 - 17:00
 
 ## History of R
 
@@ -58,7 +58,7 @@ _Image Credit:_ [***Aberdeen Study Group***](https://aberdeenstudygroup.github.i
 
 ## Not covered in this course
 
-- Statistics
+- Statistics (see March 5th)
 - Specific applications
     + e.g. Bioinformatics
 
@@ -89,8 +89,6 @@ _Image Credit:_ [***Aberdeen Study Group***](https://aberdeenstudygroup.github.i
 <img src="images/gapminder.png" style="width: 50%; display: block; margin-left: auto; margin-right: auto;"/>
 
 - We will use data from the gapminder project
-- Download these data now and **unzip** to a folder on your machine
-    + **tinyurl.com/sbc-r-course**
 
 ## Example plots
 
