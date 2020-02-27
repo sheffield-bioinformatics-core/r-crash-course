@@ -234,10 +234,12 @@ The **Packages** tab in the bottom-right panel of RStudio lists all packages tha
 
 There are functions for installing packages within R. If your package is part of the main **CRAN** repository, you can use `install.packages`
 
-We will be using the `tidyverse` R package in this practical. To install it, we would do.
+We will be using the `dplyr` R package in this practical. To install it, we would do.
 
 ```{r eval=FALSE}
-install.packages("tidyverse")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("readr")
 ```
 
 
@@ -246,12 +248,12 @@ A package may have several *dependencies*; other R packages from which it uses f
 **So long as you stick with the same version of R, you won't need to repeat this install process.**
 
 
-Once a package is installed, the `library` function is used to load a package and make it's functions / data available in your current R session. *You need to do this every time you load a new RStudio session*. Let's go ahead and load the `tidyverse`.
+Once a package is installed, the `library` function is used to load a package and make it's functions / data available in your current R session. *You need to do this every time you load a new RStudio session*. Let's go ahead and load the `dplyr`.
 
 
 ```{r}
-## tidyverse is a collection of packages for data manipulation and visualisation
-library(tidyverse)
+## dplyr is a collection of functions for data manipulation
+library(dplyr)
 ```
 
 
@@ -338,14 +340,14 @@ Let's clear everything and write our first markdown and chunk of code by creatin
 ```
 
 
-and loading the tidyverse packages for the analysis in our notebook
+and loading the `dplyr` packages for the analysis in our notebook
 
     `r ''````{r load-packages}
-    library("tidyverse")
+    library("dplyr")
     ```
 
 ```{r load-packages, message=FALSE}
-library("tidyverse")
+library("dplyr")
 ```
 
 <br>
@@ -365,6 +367,7 @@ file.exists(gapminder_path)
 Assuming the file can be found, we can use `read_csv` to import. Other functions can be used to read tab-delimited files (`read_delim`) or a generic `read.table` function. A data frame object is created.
 
 ```{r}
+library(readr)
 gapminder <- read_csv(gapminder_path)
 ```
 
