@@ -195,7 +195,7 @@ In the examples above, `seq` and `rnorm` were both outputting a series of number
 
   - What is the value of `pi` to 3 decimal places?
     + see the help for `round` `?round`
-  - How can we a create a sequence from 2 to 20 comprised of 5 equally-spaced numbers?
+  - How can we a create a sequence from 2 to 20 that consists exactly 5 numbers?
     + check the help page for seq `?seq`
   - Create a *variable* containing 1000 random numbers with a *mean* of 2 and a *standard deviation* of 3
     + what is the maximum and minimum of these numbers?
@@ -533,12 +533,7 @@ filter(gapminder, country == "Zambia", lifeExp < 40)
 
 - Create a subset of the data where the population less than a million in the year 2002
 - Create a subset of the data where the life expectancy was greater than 75 in the years prior to 1987
-- (EXTRA - if you have time) Create a subset of the **European** data where the life expectancy is greater than 80 in either the year 2002 *or* 2007
-
-```{r}
-
-```
-
+- (EXTRA - if you have time) Create a subset of the **European** data where the life expectancy is greater than 80 in the 2000s
 
 
 ******
